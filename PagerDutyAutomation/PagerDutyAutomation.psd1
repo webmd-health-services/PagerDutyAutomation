@@ -22,7 +22,7 @@
     CompanyName = 'WebMD Health Services'
 
     # If you want to support .NET Core, add 'Core' to this list.
-    CompatiblePSEditions = @( 'Desktop' )
+    CompatiblePSEditions = @( 'Desktop', 'Core' )
 
     # Copyright statement for this module
     Copyright = '(c) 2020 WebMD Health Services. All rights reserved.'
@@ -94,10 +94,10 @@
         PSData = @{
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags = @( )
+            Tags = @( 'PagerDuty' )
 
             # A URL to the license for this module.
-            #LicenseUri = ''
+            LicenseUri = 'https://www.apache.org/licenses/LICENSE-2.0'
 
             # A URL to the main website for this project.
             ProjectUri = 'https://whsbitbucket.webmd.net/projects/POWERSHELL/repos/PagerDutyAutomation/browse'
