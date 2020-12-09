@@ -1,0 +1,6 @@
+TOPIC
+    about_PagerDutyAutomation
+
+SHORT DESCRIPTION
+    PagerDutyAutomation is a PowerShell module for accessing the PagerDuty APIs.
+

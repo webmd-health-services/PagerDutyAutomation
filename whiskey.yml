@@ -1,0 +1,54 @@
+
+PublishOn:
+- main
+- prerelease
+
+Build:
+- Version:
+    Path: PagerDutyAutomation\PagerDutyAutomation.psd1
+- MergeFile:
+    OnlyBy: BuildServer
+    Path:
+    - PagerDutyAutomation\Functions\*.ps1
+    DestinationPath: PagerDutyAutomation\PagerDutyAutomation.psm1
+    DeleteSourceFiles: true
+    TextSeparator: "$(NewLine)$(NewLine)"
+- Pester4:
+    Path: Tests\*.Tests.ps1
+- Zip:
+    ArchivePath: .output\PagerDutyAutomation.zip
+    Path: 
+    - PagerDutyAutomation
+
+Publish:
+- AppVeyorWaitForBuildJobs:
+    UnlessExists: env:APPVEYOR_PULL_REQUEST_NUMBER
+    IfExists: env:APPVEYOR_BEARER_TOKEN
+    OnlyOnPlatform: Windows
+    ApiKeyID: AppVeyor
+- PublishPowerShellModule:
+    OnlyOnPlatform: Windows
+    UnlessExists: env:APPVEYOR_PULL_REQUEST_NUMBER
+    RepositoryName: PSGallery
+    RepositoryUri: https://powershellgallery.com/api/v2/
+    Path: PagerDutyAutomation
+    ApiKeyID: PowerShellGallery
+- SetVariableFromPowerShellDataFile:
+    Path: PagerDutyAutomation\PagerDutyAutomation.psd1
+    Variables:
+        PrivateData:
+            PSData:
+                ReleaseNotes: RELEASE_NOTES
+- GitHubRelease:
+    OnlyOnPlatform: Windows
+    UnlessExists: env:APPVEYOR_PULL_REQUEST_NUMBER
+    RepositoryName: webmd-health-services/PagerDutyAutomation
+    ApiKeyID: github.com
+    Tag: $(WHISKEY_SEMVER2_NO_BUILD_METADATA)
+    Commitish: $(WHISKEY_SCM_COMMIT_ID)
+    Name: $(WHISKEY_SEMVER2_NO_BUILD_METADATA)
+    Description: $(RELEASE_NOTES)
+    Assets:
+    - Path: .output\PagerDutyAutomation.zip
+      ContentType: application/zip
+      Name: PagerDutyAutomation-$(WHISKEY_SEMVER2_NO_BUILD_METADATA).zip
