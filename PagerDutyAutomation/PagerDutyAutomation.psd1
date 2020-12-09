@@ -10,7 +10,7 @@
     RootModule = 'PagerDutyAutomation.psm1'
 
     # Version number of this module.
-    ModuleVersion = '0.0.0'
+    ModuleVersion = '0.1.0'
 
     # ID used to uniquely identify this module
     GUID = '551979DA-2622-443C-BB85-1D510601FC76'
@@ -68,6 +68,7 @@
 
     # Functions to export from this module. Only list public function here.
     FunctionsToExport = @(
+                            'New-PDSession'
                          )
 
     # Cmdlets to export from this module. By default, you get a script module, so there are no cmdlets.
@@ -107,6 +108,7 @@
 
             # ReleaseNotes of this module
             ReleaseNotes = @'
+* Created `New-PDSession` function for holding session information.
 '@
         } # End of PSData hashtable
 
