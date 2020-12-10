@@ -10,7 +10,7 @@
     RootModule = 'PagerDutyAutomation.psm1'
 
     # Version number of this module.
-    ModuleVersion = '0.0.0'
+    ModuleVersion = '0.1.0'
 
     # ID used to uniquely identify this module
     GUID = '551979DA-2622-443C-BB85-1D510601FC76'
@@ -22,7 +22,7 @@
     CompanyName = 'WebMD Health Services'
 
     # If you want to support .NET Core, add 'Core' to this list.
-    CompatiblePSEditions = @( 'Desktop' )
+    CompatiblePSEditions = @( 'Desktop', 'Core' )
 
     # Copyright statement for this module
     Copyright = '(c) 2020 WebMD Health Services. All rights reserved.'
@@ -68,6 +68,8 @@
 
     # Functions to export from this module. Only list public function here.
     FunctionsToExport = @(
+                            'Invoke-PDRestMethod',
+                            'New-PDSession'
                          )
 
     # Cmdlets to export from this module. By default, you get a script module, so there are no cmdlets.
@@ -94,10 +96,10 @@
         PSData = @{
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags = @( )
+            Tags = @( 'PagerDuty' )
 
             # A URL to the license for this module.
-            #LicenseUri = ''
+            LicenseUri = 'https://www.apache.org/licenses/LICENSE-2.0'
 
             # A URL to the main website for this project.
             ProjectUri = 'https://whsbitbucket.webmd.net/projects/POWERSHELL/repos/PagerDutyAutomation/browse'
@@ -107,6 +109,8 @@
 
             # ReleaseNotes of this module
             ReleaseNotes = @'
+* Created `New-PDSession` function for holding session information.
+* Created `Invoke-PDRestMethod` function for calling PagerDuty API endpoints.
 '@
         } # End of PSData hashtable
 
