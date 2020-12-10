@@ -68,6 +68,7 @@
 
     # Functions to export from this module. Only list public function here.
     FunctionsToExport = @(
+                            'Invoke-PDRestMethod',
                             'New-PDSession'
                          )
 
@@ -109,6 +110,7 @@
             # ReleaseNotes of this module
             ReleaseNotes = @'
 * Created `New-PDSession` function for holding session information.
+* Created `Invoke-PDRestMethod` function for calling PagerDuty API endpoints.
 '@
         } # End of PSData hashtable
 
