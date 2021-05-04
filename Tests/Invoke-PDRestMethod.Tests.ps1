@@ -8,23 +8,24 @@ $session = New-PDTestSession
 
 Describe 'Invoke-PDRestMethod.when endpoint pages results' {
     It 'should return page object' {
-        $page = Invoke-PDRestMethod -Session $session -Path 'services'
+        $count = 1
+        $page = Invoke-PDRestMethod -Session $session -Path 'services' -Count $count
         $page | Should -Not -BeNullOrEmpty
         $page.more | Should -BeTrue
         $page.offset | Should -Be 0
-        $page.limit | Should -Be 25
+        $page.limit | Should -Be $count
         $page.total | Should -BeNullOrEmpty
-        $page.services | Should -HaveCount 25
+        $page.services | Should -HaveCount $count
 
         $page1FirstService = $page.services | Select-Object -First 1
 
-        $page = Invoke-PDRestMethod -Session $session -Path 'services' -Offset $page.limit
+        $page = Invoke-PDRestMethod -Session $session -Path 'services' -Offset $page.limit -Count $count
         $page | Should -Not -BeNullOrEmpty
         $page.more | Should -Not -BeNullOrEmpty
-        $page.offset | Should -Be 25
-        $page.limit | Should -Be 25
+        $page.offset | Should -Be $count
+        $page.limit | Should -Be $count
         $page.total | Should -BeNullOrEmpty
-        $page.services | Should -HaveCount 25
+        $page.services | Should -HaveCount $count
         # Make sure it actually returns a new page of results.
         $page.services |
             Select-Object -First 1 |
@@ -35,19 +36,10 @@ Describe 'Invoke-PDRestMethod.when endpoint pages results' {
 
 Describe 'Invoke-PDRestMethod.when requesting total objects in a paged endpoint' {
     It 'should return total number of objects' {
-        $page = Invoke-PDRestMethod -Session $session -Path 'services' -IncludeTotal
+        $count = 1
+        $page = Invoke-PDRestMethod -Session $session -Path 'services' -Count $count -IncludeTotal
         $page | Should -Not -BeNullOrEmpty
         $page.total | Should -Not -BeNullOrEmpty
-    }
-}
-
-Describe 'Invoke-PDRestMethod.when requesting custom number of objects from paged endpoint' {
-    It 'should return more than the default number of objects' {
-        $page = Invoke-PDRestMethod -Session $session -Path 'services'
-        $defaultCount = $page.services | Measure-Object | Select-Object -ExpandProperty 'Count'
-        $page = Invoke-PDRestMethod -Session $session -Path 'services' -Count 10000
-        $page | Should -Not -BeNullOrEmpty
-        $page.services | Measure-Object | Select-Object -ExpandProperty 'Count' | Should -BeGreaterThan $defaultCount
     }
 }
 

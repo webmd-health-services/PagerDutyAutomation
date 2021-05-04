@@ -146,7 +146,7 @@ function Invoke-PDRestMethod
         $startAt = 0
         do
         {
-            $page = Invoke-PDRestMethod @parameters -Offset $startAt -Count 10000
+            $page = Invoke-PDRestMethod @parameters -Offset $startAt -Count 1000
             $startAt += $page.limit
 
             # The property holding the return objects is different across endpoints.
