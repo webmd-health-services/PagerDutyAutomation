@@ -46,7 +46,7 @@ Describe 'Invoke-PDRestMethod.when requesting total objects in a paged endpoint'
 Describe 'Invoke-PDRestMethod.when requesting a single object' {
     It 'should return just that object' {
         $lastService = Invoke-PDRestMethod -Session $session -Path 'services' -All | Select-Object -Last 1
-        
+
         $result = Invoke-PDRestMethod -Session $session -Path 'services' -First { $_.id -eq $lastService.id }
         $result | Should -Not -BeNullOrEmpty
         $result.id | Should -Be $lastService.id
@@ -71,12 +71,12 @@ Describe 'Invoke-PDRestMethod.when filtering results' {
 Describe 'Invoke-PDRestMethod.when api throws an error' {
     It 'should write error' {
         { Invoke-PDRestMethod -Session $session -Path 'services/fubar/fubar' -ErrorAction Stop } |
-            Should -Throw 'failed with HTTP error "Not Found" (404) and PagerDuty error "Not Found" (2100)'
+            Should -Throw 'failed with HTTP error "Not Found" (404). PagerDuty error "Not Found" (2100)).'
     }
 }
 
 Describe 'Invoke-PDRestMethod.when api throws an error and ignoring errors' {
-    It 'should write no error' { 
+    It 'should write no error' {
         $Global:Error.Clear()
         { Invoke-PDRestMethod -Session $session -Path 'services/fubar/fubar' -ErrorAction Ignore } | Should -Not -Throw
         $Global:Error | Where-Object { $_ -like 'failed with HTTP error * and PagerDuty error' } | Should -BeNullOrEmpty
@@ -108,7 +108,7 @@ Describe 'Invoke-PDRestMethod.when user passes string for body' {
         Invoke-PDRestMethod -Session $session -Path 'some/path' -Body $expectedBody
         Assert-MockCalled -CommandName 'Invoke-RestMethod' `
                           -ModuleName 'PagerDutyAutomation' `
-                          -ParameterFilter { 
+                          -ParameterFilter {
                               $Body | Should -Be $expectedBody
                               return $true
                           }
@@ -126,8 +126,8 @@ Describe 'Invoke-PDRestMethod.when user passes object for body' {
         Invoke-PDRestMethod -Session $session -Path 'some/path' -Body $bodyObject
         Assert-MockCalled -CommandName 'Invoke-RestMethod' `
                           -ModuleName 'PagerDutyAutomation' `
-                          -ParameterFilter { 
-                              $Body | Should -Be ($bodyObject | ConvertTo-Json) 
+                          -ParameterFilter {
+                              $Body | Should -Be ($bodyObject | ConvertTo-Json)
                               return $true
                           }
     }
