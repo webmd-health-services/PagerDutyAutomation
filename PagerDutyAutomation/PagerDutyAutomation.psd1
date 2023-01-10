@@ -108,16 +108,8 @@
             # IconUri = ''
 
             # ReleaseNotes of this module
-            ReleaseNotes = @'
-# 0.1.1
+            ReleaseNotes = 'https://github.com/webmd-health-services/PagerDutyAutomation/blob/master/CHANGELOG.md'
 
-* Fixed: Invoke-PDRestMethod's default limit value (10000) fails. 
-
-# 0.1.0
-
-* Created `New-PDSession` function for holding session information.
-* Created `Invoke-PDRestMethod` function for calling PagerDuty API endpoints.
-'@
         } # End of PSData hashtable
 
     } # End of PrivateData hashtable
