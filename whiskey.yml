@@ -15,9 +15,16 @@ Build:
     TextSeparator: "$(NewLine)$(NewLine)"
 - Pester4:
     Path: Tests\*.Tests.ps1
+- CopyFile:
+    Path:
+    - CHANGELOG.md
+    - LICENSE
+    - NOTICE
+    - README.md
+    DestinationDirectory: PagerDutyAutomation
 - Zip:
     ArchivePath: .output\PagerDutyAutomation.zip
-    Path: 
+    Path:
     - PagerDutyAutomation
 
 Publish:

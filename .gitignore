@@ -1,3 +1,6 @@
 /.output
 /PSModules
 /.vscode
+/PagerDutyAutomation/*.md
+/PagerDutyAutomation/LICENSE
+/PagerDutyAutomation/NOTICE
