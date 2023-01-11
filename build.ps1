@@ -42,7 +42,7 @@ $ErrorActionPreference = 'Stop'
 
 Set-StrictMode -Version Latest
 
-# Set to a specific version to use a specific version of Whiskey. 
+# Set to a specific version to use a specific version of Whiskey.
 $whiskeyVersion = '0.*'
 $allowPrerelease = $false
 
@@ -52,7 +52,7 @@ $whiskeyModuleRoot = Join-Path -Path $PSScriptRoot -ChildPath 'PSModules\Whiskey
 if( -not (Test-Path -Path $whiskeyModuleRoot -PathType Container) )
 {
     [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocolType]::Tls12
-    $release = 
+    $release =
         Invoke-RestMethod -Uri 'https://api.github.com/repos/webmd-health-services/Whiskey/releases' |
         ForEach-Object { $_ } |
         Where-Object { $_.name -like $whiskeyVersion } |
@@ -72,12 +72,12 @@ if( -not (Test-Path -Path $whiskeyModuleRoot -PathType Container) )
         return
     }
 
-    $zipUri = 
+    $zipUri =
         $release.assets |
         ForEach-Object { $_ } |
         Where-Object { $_.name -like 'Whiskey*.zip' } |
         Select-Object -ExpandProperty 'browser_download_url'
-    
+
     if( -not $zipUri )
     {
         Write-Error -Message ('URI to Whiskey ZIP file does not exist.') -ErrorAction Stop
@@ -130,7 +130,7 @@ if( -not (Test-Path -Path $whiskeyModuleRoot -PathType Container) )
     Import-Module -Name $whiskeyModuleRoot -Force
 }
 
-$configPath = Join-Path -Path $PSScriptRoot -ChildPath 'whiskey.yml' 
+$configPath = Join-Path -Path $PSScriptRoot -ChildPath 'whiskey.yml'
 if( -not (Test-Path -Path $configPath -PathType 'Leaf') )
 {
     @'
@@ -155,17 +155,4 @@ if( $Initialize )
 }
 
 $context = New-WhiskeyContext -Environment 'Dev' -ConfigurationPath $configPath
-$apiKeys = @{
-                'PowerShellGallery' = 'POWERSHELL_GALLERY_API_KEY';
-                'github.com' = 'GITHUB_ACCESS_TOKEN';
-                'AppVeyor' = 'APPVEYOR_BEARER_TOKEN';
-            }
-$apiKeys.Keys |
-    Where-Object { Test-Path -Path ('env:{0}' -f $apiKeys[$_]) } |
-    ForEach-Object {
-        $apiKeyID = $_
-        $envVarName = $apiKeys[$apiKeyID]
-        Write-Verbose ('Adding API key "{0}" with value from environment variable "{1}".' -f $apiKeyID,$envVarName)
-        Add-WhiskeyApiKey -Context $context -ID $apiKeyID -Value (Get-Item -Path ('env:{0}' -f $envVarName)).Value
-    }
 Invoke-WhiskeyBuild -Context $context @optionalArgs
