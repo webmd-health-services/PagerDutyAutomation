@@ -107,6 +107,9 @@
             # A URL to an icon representing this module.
             # IconUri = ''
 
+            # Prerelease version identifiers.
+            Prerelease = ''
+
             # ReleaseNotes of this module
             ReleaseNotes = 'https://github.com/webmd-health-services/PagerDutyAutomation/blob/master/CHANGELOG.md'
 
