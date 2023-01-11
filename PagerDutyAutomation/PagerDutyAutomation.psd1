@@ -10,7 +10,7 @@
     RootModule = 'PagerDutyAutomation.psm1'
 
     # Version number of this module.
-    ModuleVersion = '0.1.1'
+    ModuleVersion = '0.1.2'
 
     # ID used to uniquely identify this module
     GUID = '551979DA-2622-443C-BB85-1D510601FC76'
