@@ -99,9 +99,6 @@ function Invoke-PDRestMethod
         [Parameter(Mandatory)]
         [Object]$Session,
 
-        [Parameter(Mandatory,ParameterSetName='Uri')]
-        [Uri]$Uri,
-
         [Parameter(Mandatory,ParameterSetName='Pagination')]
         [Parameter(Mandatory,ParameterSetName='First')]
         [Parameter(Mandatory,ParameterSetName='Filter')]
@@ -128,7 +125,10 @@ function Invoke-PDRestMethod
         [scriptblock]$Filter,
 
         [Parameter(ParameterSetName='All')]
-        [switch]$All
+        [switch]$All,
+
+        [Parameter(Mandatory,ParameterSetName='Uri')]
+        [Uri] $Url
     )
 
     Set-StrictMode -Version 'Latest'
@@ -203,7 +203,7 @@ function Invoke-PDRestMethod
     $url = $null
     if( $PSCmdlet.ParameterSetName -eq 'Uri' )
     {
-        $url = $Uri.ToString()
+        $url = $Url.ToString()
     }
     else
     {
@@ -246,12 +246,17 @@ function Invoke-PDRestMethod
     }
 
     $result = $null
+
+    Write-Verbose "$($Method.ToString().ToUpperInvariant()) $($url)"
+    Write-Debug "$($conditionalParams['Body'])"
+
     try
     {
         $result = Invoke-RestMethod -Uri $url `
                                     -Headers $headers `
                                     -ContentType 'application/json' `
                                     -Method $Method `
+                                    -Verbose:$false `
                                     @conditionalParams
     }
     catch

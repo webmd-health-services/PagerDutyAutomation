@@ -10,7 +10,7 @@
     RootModule = 'PagerDutyAutomation.psm1'
 
     # Version number of this module.
-    ModuleVersion = '0.1.2'
+    ModuleVersion = '1.0.0'
 
     # ID used to uniquely identify this module
     GUID = '551979DA-2622-443C-BB85-1D510601FC76'
@@ -68,6 +68,7 @@
 
     # Functions to export from this module. Only list public function here.
     FunctionsToExport = @(
+                            'Convert-PDExtension',
                             'Invoke-PDRestMethod',
                             'New-PDSession'
                          )
