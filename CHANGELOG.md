@@ -3,7 +3,14 @@
 
 ## 1.0.0
 
-* Added `Convert-PDExtension` function for converting v1/v2 extensions to webhook subscriptions.
+## Added
+
+* Parameter `Url` to function `Invoke-PDRestMethod` to replace the now-obsolete `Uri` parameter.
+* `Convert-PDExtension` function for converting v1/v2 extensions to webhook subscriptions.
+
+## Deprecated
+
+* `Uri` parameter on `Invoke-PDRestMethod`. Use the new `Url` parameter instead.
 
 ## 0.1.2 (2023-01-11)
 

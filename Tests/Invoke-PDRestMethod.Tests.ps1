@@ -95,7 +95,7 @@ Describe 'Invoke-PDRestMethod.when using self urls' {
             }
             foreach( $url in $urls )
             {
-                Invoke-PDRestMethod -Session $session -Uri $url | Should -Not -BeNullOrEmpty
+                Invoke-PDRestMethod -Session $session -Url $url | Should -Not -BeNullOrEmpty
             }
         } | Should -Not -Throw
     }
