@@ -4,8 +4,8 @@ Build:
 - Version:
     Path: PagerDutyAutomation\PagerDutyAutomation.psd1
     Prerelease:
-    - "*/*": alpha$(WHISKEY_BUILD_NUMBER)
-    - develop: rc$(WHISKEY_BUILD_NUMBER)
+    - "*/*": alpha0
+    - develop: rc0
 
 # Update the AppVeyor build/version number.
 - Exec:
@@ -33,10 +33,6 @@ Build:
     - README.md
     DestinationDirectory: PagerDutyAutomation
 
-# Build runs twice on some servers, so delete any ZIP file created by another build.
-- Delete:
-    Path: .output\*.zip
-
 - Zip:
     ArchivePath: .output\PagerDutyAutomation-$(WHISKEY_SEMVER2).zip
     Path:
@@ -46,6 +42,9 @@ Build:
     OnlyBy: BuildServer
     Path: appveyor
     Argument: [ 'PushArtifact', '.output/PagerDutyAutomation-$(WHISKEY_SEMVER2).zip', '-DeploymentName', 'GitHub' ]
+
+- Pester4:
+    Path: Tests\*.Tests.ps1
 
 - PublishPowerShellModule:
     Path: PagerDutyAutomation
@@ -60,5 +59,3 @@ Build:
         'PowerShellGallery'
     ]
 
-- Pester4:
-    Path: Tests\*.Tests.ps1

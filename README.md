@@ -1,18 +1,24 @@
-0# PagerDutyAutomation
+# PagerDutyAutomation
 
 Functions for working with the PagerDuty APIs.
 
-# System Requirements
+## System Requirements
 
 PowerShell 5.1+
 
-# Installation
+## Installation
 
 ```powershell
 Install-Module -Name PagerDutyAutomation
 ```
 
-# Usage
+## Commands
+
+* Convert-PDExtension: converts v1/v2 extensions to v3 webhook subscriptions.
+* Invoke-PDRestMethod: makes requests to the PagerDuty API.
+* New-PDSession: creates a session object that is required for all functions that make a request to the PagerDuty API.
+
+## Usage
 
 ```powershell
 Import-Module -Name PagerDutyAutomation

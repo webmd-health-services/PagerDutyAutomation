@@ -1,6 +1,17 @@
 
 # PagerDutyAutomation Changelog
 
+## 1.0.0
+
+## Added
+
+* Parameter `Url` to function `Invoke-PDRestMethod` to replace the now-obsolete `Uri` parameter.
+* `Convert-PDExtension` function for converting v1/v2 extensions to webhook subscriptions.
+
+## Deprecated
+
+* `Uri` parameter on `Invoke-PDRestMethod`. Use the new `Url` parameter instead.
+
 ## 0.1.2 (2023-01-11)
 
 * Fixed: Invoke-PDRestMethod fails to write a proper error when the PagerDuty API doesn't return an error object.

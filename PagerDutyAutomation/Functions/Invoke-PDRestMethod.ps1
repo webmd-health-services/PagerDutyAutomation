@@ -33,7 +33,7 @@ function Invoke-PDRestMethod
     to the script block using the `Where-Object` cmdlet.
 
     If you have the full URL to an item (usually from the `self` property on an object returned by an endpoint), you
-    can pass that to the `Uri` parameter.
+    can pass that to the `Url` parameter.
 
     If you're calling an endpoint that receives a JSON body, pass the JSON to the `Body` parameter. You can also pass in
     an object, and `Invoke-PDRestMethod` will convert it to JSON for you (e.g. `$Body | ConvertTo-Json -Depth 50`). Use
@@ -79,7 +79,7 @@ function Invoke-PDRestMethod
     block is passed to `Where-Object` to select the objects to return.
 
     .EXAMPLE
-    Invoke-PDRestMethod -Session $session -Uri $item.self
+    Invoke-PDRestMethod -Session $session -Url $item.self
 
     Demonstrates how to use the full `self` URLs returned on PagerDuty objects to get specific objects.
 
@@ -98,9 +98,6 @@ function Invoke-PDRestMethod
     param(
         [Parameter(Mandatory)]
         [Object]$Session,
-
-        [Parameter(Mandatory,ParameterSetName='Uri')]
-        [Uri]$Uri,
 
         [Parameter(Mandatory,ParameterSetName='Pagination')]
         [Parameter(Mandatory,ParameterSetName='First')]
@@ -128,7 +125,11 @@ function Invoke-PDRestMethod
         [scriptblock]$Filter,
 
         [Parameter(ParameterSetName='All')]
-        [switch]$All
+        [switch]$All,
+
+        [Parameter(Mandatory,ParameterSetName='Url')]
+        [Alias('Uri')]
+        [Uri] $Url
     )
 
     Set-StrictMode -Version 'Latest'
@@ -200,12 +201,7 @@ function Invoke-PDRestMethod
         'Accept' = 'application/vnd.pagerduty+json;version=2';
     }
 
-    $url = $null
-    if( $PSCmdlet.ParameterSetName -eq 'Uri' )
-    {
-        $url = $Uri.ToString()
-    }
-    else
+    if( $PSCmdlet.ParameterSetName -ne 'Url' )
     {
         $queryString = & {
             if( $Offset )
@@ -228,7 +224,7 @@ function Invoke-PDRestMethod
         {
             $queryString = "?$($queryString -join '&')"
         }
-        $url = "$($Session.Url)/$($Path.TrimStart('/'))$($queryString)"
+        $Url = "$($Session.Url)/$($Path.TrimStart('/'))$($queryString)"
     }
 
     $conditionalParams = @{}
@@ -246,12 +242,17 @@ function Invoke-PDRestMethod
     }
 
     $result = $null
+
+    Write-Verbose "$($Method.ToString().ToUpperInvariant()) $($Url)"
+    Write-Debug "$($conditionalParams['Body'])"
+
     try
     {
-        $result = Invoke-RestMethod -Uri $url `
+        $result = Invoke-RestMethod -Uri $Url `
                                     -Headers $headers `
                                     -ContentType 'application/json' `
                                     -Method $Method `
+                                    -Verbose:$false `
                                     @conditionalParams
     }
     catch
@@ -269,7 +270,7 @@ function Invoke-PDRestMethod
         }
         $httpStatusCode = $_.Exception.Response.StatusCode
 
-        $msg = "Request to $($url) failed with HTTP error ""$($httpStatusDesc)"" ($([int]$httpStatusCode))."
+        $msg = "Request to $($Url) failed with HTTP error ""$($httpStatusDesc)"" ($([int]$httpStatusCode))."
 
         $pdErrMsg =
             $pderror |
